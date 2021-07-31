@@ -2,6 +2,7 @@ import math
 import matplotlib.pyplot as plt
 
 
+
 x = float(input("What radians would you like to calulate?: "))
 n = 80
 def iteration(i):
@@ -14,10 +15,6 @@ def mainFunction(n,x):
     
     return answer
 
-
-
-print(mainFunction(n,x))
-print(math.sin(x))
 
 def accuracyGrapher():
     xValues = []
@@ -36,5 +33,6 @@ def accuracyGrapher():
 accuracyGrapher()
 
 
-
+print(mainFunction(n,x))
+print(math.sin(x))
 
