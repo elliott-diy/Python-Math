@@ -1,3 +1,4 @@
+# Test the difference in computation time between a set of functions that calculate all prime numbers in a given range
 import time
 import math
 import matplotlib.pyplot as plt
@@ -5,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Methods for finding all prime numbers up to max value 'n'
 # Slow method using a basic check
-def slow_method(n: int) -> list:
+def slow_method(n: int) -> list[int]:
     results = [2]
     for i in range(3, n, 2):
         is_prime = True
@@ -19,7 +20,7 @@ def slow_method(n: int) -> list:
 
 
 # Fast method using squares
-def fast_method(n: int) -> list:
+def fast_method(n: int) -> list[int]:
     results = [2]
     for i in range(3, n, 2):
         is_prime = True
@@ -33,7 +34,7 @@ def fast_method(n: int) -> list:
 
 
 # Faster method using previous results
-def faster_method(n: int) -> list:
+def faster_method(n: int) -> list[int]:
     results = [2]
     for i in range(3, n, 2):
         is_prime = True

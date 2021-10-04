@@ -1,24 +1,16 @@
+# Graph the position and velocity of an object in a simple harmonic motion
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Program settings
-n = 10  # Iterations
-m = 10  # Mass
-k = 40  # Spring constant
-c = 5  # Damping
-y = -4  # Start displacement
-v = 0  # Start velocity
-w = math.sqrt(k / m)  # Angular frequency
-
 
 # Calculate position
-def position(t, v, y, w) -> float:
+def position(t: float, v: float, y: float, w: float) -> float:
     return (y * math.cos(w * t)) + ((v / w) * math.sin(w * t))
 
 
 # Calculate velocity
-def velocity(t, v, y, w) -> float:
+def velocity(t: float, v: float, y: float, w: float) -> float:
     return ((-y * math.sin(w * t)) * w) + (v * math.cos(w * t))
 
 
@@ -42,6 +34,15 @@ def main():
     fig.tight_layout()
     plt.show()
 
+
+# Program settings
+n = 10  # Iterations
+m = 10  # Mass
+k = 40  # Spring constant
+c = 5  # Damping
+y = -4  # Start displacement
+v = 0  # Start velocity
+w = math.sqrt(k / m)  # Angular frequency
 
 if __name__ == '__main__':
     main()

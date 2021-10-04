@@ -1,16 +1,13 @@
+# Test the difference in accuracy between sin() and Python's math.sin()
 import math
 import matplotlib.pyplot as plt
-
-x = float(input("sin: "))  # Radians
-n = 80  # Iterations
-# Over 85 iterations results in OverflowError
 
 
 # Calculate sine of 'x' with 'n' iterations
 def sin(x: float, n: int) -> float:
     result = 0
     for i in range(0, n):
-        result += ((-1) ** i) * (x ** ((2 * i) + 1)) / math.factorial((2 * i) + 1)
+        result += (-1 ** i) * (x ** ((2 * i) + 1)) / math.factorial((2 * i) + 1)
     return result
 
 
@@ -35,6 +32,10 @@ def main(x: float, n: int):
     plt.legend()
     plt.show()
 
+
+x = float(input("Radians: "))  # Radians
+n = 80  # Iterations
+# Over 85 iterations results in OverflowError
 
 if __name__ == '__main__':
     main(x, n)
