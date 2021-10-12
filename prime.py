@@ -1,77 +1,78 @@
+# Test the difference in computation time between a set of functions that calculate all prime numbers in a given range
 import time
 import math
-import psutil
 import matplotlib.pyplot as plt
 
 
-
-# ----------------------------------------------------------------------
-# Start message
-print("Prime Number Finder has started!")
-print("This may take a momment...")
-
-
-# ----------------------------------------------------------------------
-# Fast Method using squares
-def fastMethod(n):
-    start_time = time.time()
-    primeNumbersFound = [2]
-
-    for i in range (3, n, 2):
-        isPrime = True
-        for j in range (3, (int)(math.sqrt(i) + 1)):
+# Methods for finding all prime numbers up to max value 'n'
+# Slow method using a basic check
+def slow_method(n: int) -> list[int]:
+    results = [2]
+    for i in range(3, n, 2):
+        is_prime = True
+        for j in range(3, i):
             if i % j == 0:
-                isPrime = False
-                break 
-        if isPrime: 
-            primeNumbersFound.append(i)
-    #print("Prime Numbers Fast")
-    #print(len(primeNumbersFound))
-    #print("--- %s seconds ---" % (time.time() - start_time))
-    fastTime = (time.time() - start_time)
-    return fastTime
-
-# ----------------------------------------------------------------------
-#Slow Method using a basic check
-def slowMethod(n):
-    start_time = time.time()
-    primeNumbersFoundSlow = []
-
-    for i in range (2, n, 1):
-        isPrime = True
-        for j in range (2, i, 1):
-            if i % j == 0:
-                isPrime = False
+                is_prime = False
                 break
-        if isPrime == True:
-            primeNumbersFoundSlow.append(i)
-    #print("Prime Numbers Slow")
-    #print(len(primeNumbersFoundSlow))
-    #print("--- %s seconds ---" % (time.time() - start_time))
-    slowTime = (time.time() - start_time)
-    return slowTime
-
-# ----------------------------------------------------------------------
-#Graph the two against eachother, and see the speed over time:
-
-timesSlowMethod = []
-cpuUssage = []
-timesFastMethod = []
-nValues = range (0, 50000, 1000)
-for n in nValues:
-    timesSlowMethod.append(slowMethod(n))
-    timesFastMethod.append(fastMethod(n))
-    cpuUssage.append(psutil.virtual_memory(1)    
-    # Fill the top bound with n, for each function.
-    # Store the number of primes found for each at each n
-    # Graph two seperate lines. n vs slow, n vs fast.
-
-plt.plot(nValues, timesFastMethod, label = "Fast Method")
-plt.plot(nValues, timesSlowMethod, label = "Slow Method")
-plt.plot(nValues, cpuUssage, label = 'CPU Ussage')
-plt.legend()
-plt.xlabel("Size of Primes to Find")
-plt.ylabel("Time")
-plt.show()
+        if is_prime:
+            results.append(i)
+    return results
 
 
+# Fast method using squares
+def fast_method(n: int) -> list[int]:
+    results = [2]
+    for i in range(3, n, 2):
+        is_prime = True
+        for j in range(3, int(math.sqrt(i) + 1)):
+            if i % j == 0:
+                is_prime = False
+                break
+        if is_prime:
+            results.append(i)
+    return results
+
+
+# Faster method using previous results
+def faster_method(n: int) -> list[int]:
+    results = [2]
+    for i in range(3, n, 2):
+        is_prime = True
+        limit = math.sqrt(i)
+        for j in results:
+            if j > limit:
+                break
+            if i % j == 0:
+                is_prime = False
+                break
+        if is_prime:
+            results.append(i)
+    return results
+
+
+def main():
+    # Graph the methods against each other to show the speed over time
+    # Add methods to test into the 'methods' list
+    methods = [fast_method, faster_method]
+    times = [[] for method in methods]
+    # Test all 'n' values from 0 to 100000 in increments of 1000
+    n_values = range(0, 100000, 1000)
+    for n in n_values:
+        # Test each method and record the elapsed time
+        for method in methods:
+            start_time = time.perf_counter()
+            results = method(n)
+            elapsed_time = time.perf_counter() - start_time
+            times[methods.index(method)].append(elapsed_time)
+            print(f"Method '{method.__name__}' found \t{len(results)} primes in \t{elapsed_time} seconds")
+    # Graph elapsed time for each method
+    for method in methods:
+        plt.plot(n_values, times[methods.index(method)], label=method.__name__)
+    plt.legend()
+    plt.xlabel("n")
+    plt.ylabel("seconds")
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()
